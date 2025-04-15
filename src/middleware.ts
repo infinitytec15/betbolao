@@ -1,16 +1,7 @@
-import createMiddleware from "next-intl/middleware";
-import { locales, defaultLocale } from "./i18n";
+// This file is required by Next.js but we're not using middleware functionality
+// Export an empty middleware function to satisfy Next.js requirements
 
-export default createMiddleware({
-  // A list of all locales that are supported
-  locales,
-  // Used when no locale matches
-  defaultLocale,
-  // If this locale is matched, pathnames work without a prefix (e.g. `/about`)
-  localePrefix: "always",
-});
-
-export const config = {
-  // Match only internationalized pathnames
-  matcher: ["/((?!api|_next|.*\\..*).*)"],
-};
+export default function middleware() {
+  // Empty middleware function
+  return;
+}

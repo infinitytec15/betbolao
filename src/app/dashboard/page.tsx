@@ -11,10 +11,10 @@ export default function Dashboard() {
 
   return (
     <div className="flex h-screen bg-black overflow-hidden">
-      {/* Background gradients */}
+      {/* Background gradients - subtle and clean */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-radial from-green-900/20 to-transparent"></div>
-        <div className="absolute top-0 left-0 right-0 h-[50vh] bg-gradient-to-b from-green-900/10 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-radial from-green-900/10 to-transparent"></div>
+        <div className="absolute top-0 left-0 right-0 h-[50vh] bg-gradient-to-b from-green-900/5 to-transparent"></div>
       </div>
 
       {/* Sidebar */}
@@ -35,12 +35,12 @@ export default function Dashboard() {
             transition={{ duration: 0.5 }}
           >
             {activeSection === "home" && "Dashboard"}
-            {activeSection === "bets" && "My Bets"}
-            {activeSection === "wallet" && "Wallet"}
-            {activeSection === "gamification" && "Gamification"}
-            {activeSection === "history" && "Transaction History"}
-            {activeSection === "support" && "Support"}
-            {activeSection === "settings" && "Settings"}
+            {activeSection === "bets" && "Minhas Apostas"}
+            {activeSection === "wallet" && "Carteira"}
+            {activeSection === "gamification" && "Gamificação"}
+            {activeSection === "history" && "Histórico de Transações"}
+            {activeSection === "support" && "Suporte"}
+            {activeSection === "settings" && "Configurações"}
           </motion.h1>
 
           {/* Dashboard content */}
@@ -52,25 +52,27 @@ export default function Dashboard() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.4 }}
-                  className="backdrop-blur-md bg-black/30 border border-gray-800 rounded-xl p-6 shadow-lg hover:shadow-green-500/20 transition-all duration-300"
+                  className="backdrop-blur-md bg-black/20 border border-gray-800 rounded-xl p-6 shadow-lg hover:shadow-green-500/10 transition-all duration-300"
                 >
                   <h2 className="text-xl font-bold text-white mb-4">
-                    Popular Pools
+                    Pools Populares
                   </h2>
                   <p className="text-gray-400">
-                    Loading popular betting pools...
+                    Carregando pools de apostas populares...
                   </p>
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.5 }}
-                  className="backdrop-blur-md bg-black/30 border border-gray-800 rounded-xl p-6 shadow-lg hover:shadow-green-500/20 transition-all duration-300"
+                  className="backdrop-blur-md bg-black/20 border border-gray-800 rounded-xl p-6 shadow-lg hover:shadow-green-500/10 transition-all duration-300"
                 >
                   <h2 className="text-xl font-bold text-white mb-4">
-                    Recent Activity
+                    Atividade Recente
                   </h2>
-                  <p className="text-gray-400">Loading recent activity...</p>
+                  <p className="text-gray-400">
+                    Carregando atividade recente...
+                  </p>
                 </motion.div>
               </div>
             </>
@@ -85,14 +87,14 @@ export default function Dashboard() {
             >
               <div className="mb-6">
                 <h2 className="text-xl font-bold text-white mb-2">
-                  Available Betting Pools
+                  Pools de Apostas Disponíveis
                 </h2>
                 <p className="text-gray-400">
-                  Join exciting betting pools and win big rewards!
+                  Participe de pools de apostas emocionantes e ganhe grandes
+                  recompensas!
                 </p>
               </div>
               <div className="dynamic-import-pools">
-                {/* This will be dynamically imported */}
                 <PoolList />
               </div>
             </motion.div>
@@ -100,9 +102,9 @@ export default function Dashboard() {
 
           {/* Placeholder for other sections */}
           {activeSection !== "home" && activeSection !== "bets" && (
-            <div className="backdrop-blur-md bg-black/30 border border-gray-800 rounded-xl p-6 shadow-lg">
+            <div className="backdrop-blur-md bg-black/20 border border-gray-800 rounded-xl p-6 shadow-lg">
               <p className="text-gray-400">
-                Content for {activeSection} will be implemented soon.
+                Conteúdo para {activeSection} será implementado em breve.
               </p>
             </div>
           )}

@@ -13,10 +13,10 @@ export default function Dashboard() {
 
   return (
     <div className="flex h-screen bg-black overflow-hidden">
-      {/* Background gradients */}
+      {/* Background gradients - subtle and clean */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-radial from-green-900/20 to-transparent"></div>
-        <div className="absolute top-0 left-0 right-0 h-[50vh] bg-gradient-to-b from-green-900/10 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-radial from-green-900/10 to-transparent"></div>
+        <div className="absolute top-0 left-0 right-0 h-[50vh] bg-gradient-to-b from-green-900/5 to-transparent"></div>
       </div>
 
       {/* Sidebar */}
@@ -54,7 +54,7 @@ export default function Dashboard() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.4 }}
-                  className="backdrop-blur-md bg-black/30 border border-gray-800 rounded-xl p-6 shadow-lg hover:shadow-green-500/20 transition-all duration-300"
+                  className="backdrop-blur-md bg-black/20 border border-gray-800 rounded-xl p-6 shadow-lg hover:shadow-green-500/10 transition-all duration-300"
                 >
                   <h2 className="text-xl font-bold text-white mb-4">
                     {t("popularPools")}
@@ -65,7 +65,7 @@ export default function Dashboard() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.5 }}
-                  className="backdrop-blur-md bg-black/30 border border-gray-800 rounded-xl p-6 shadow-lg hover:shadow-green-500/20 transition-all duration-300"
+                  className="backdrop-blur-md bg-black/20 border border-gray-800 rounded-xl p-6 shadow-lg hover:shadow-green-500/10 transition-all duration-300"
                 >
                   <h2 className="text-xl font-bold text-white mb-4">
                     {t("recentActivity")}
@@ -90,7 +90,6 @@ export default function Dashboard() {
                 <p className="text-gray-400">{t("joinExcitingPools")}</p>
               </div>
               <div className="dynamic-import-pools">
-                {/* This will be dynamically imported */}
                 <PoolList />
               </div>
             </motion.div>
@@ -98,7 +97,7 @@ export default function Dashboard() {
 
           {/* Placeholder for other sections */}
           {activeSection !== "home" && activeSection !== "bets" && (
-            <div className="backdrop-blur-md bg-black/30 border border-gray-800 rounded-xl p-6 shadow-lg">
+            <div className="backdrop-blur-md bg-black/20 border border-gray-800 rounded-xl p-6 shadow-lg">
               <p className="text-gray-400">
                 {t("contentImplementedSoon", { section: activeSection })}
               </p>

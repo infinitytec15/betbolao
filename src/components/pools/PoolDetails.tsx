@@ -23,7 +23,6 @@ import {
   DollarSign,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
 
 interface Pool {
   id: string;
@@ -61,7 +60,6 @@ const PoolDetails = ({ poolId = "1", onBack }: PoolDetailsProps) => {
   const [potentialWinnings, setPotentialWinnings] = useState<number>(0);
   const [placingBet, setPlacingBet] = useState(false);
   const [betPlaced, setBetPlaced] = useState(false);
-  const t = useTranslations("poolDetails");
 
   // Mock data fetch
   useEffect(() => {
@@ -72,7 +70,7 @@ const PoolDetails = ({ poolId = "1", onBack }: PoolDetailsProps) => {
       const mockPool: Pool = {
         id: "1",
         title: "Premier League Championship",
-        sport: "Soccer",
+        sport: "Futebol",
         event: "Manchester City vs. Liverpool",
         participants: 1245,
         prize: 25000,
@@ -80,7 +78,7 @@ const PoolDetails = ({ poolId = "1", onBack }: PoolDetailsProps) => {
         image:
           "https://images.unsplash.com/photo-1508098682722-e99c643e7f0b?w=800&q=80",
         description:
-          "The Premier League Championship is the pinnacle of English football, featuring the country's top clubs competing for the prestigious title. This season's final showdown sees Manchester City facing Liverpool in what promises to be an electrifying match.",
+          "O Campeonato da Premier League é o ápice do futebol inglês, apresentando os principais clubes do país competindo pelo prestigioso título. O confronto final desta temporada coloca o Manchester City contra o Liverpool no que promete ser uma partida eletrizante.",
         teams: [
           {
             id: "team1",
@@ -96,7 +94,7 @@ const PoolDetails = ({ poolId = "1", onBack }: PoolDetailsProps) => {
           },
           {
             id: "draw",
-            name: "Draw",
+            name: "Empate",
             logo: "https://api.dicebear.com/7.x/initials/svg?seed=DRAW&backgroundColor=gray",
             odds: 3.5,
           },
@@ -162,11 +160,13 @@ const PoolDetails = ({ poolId = "1", onBack }: PoolDetailsProps) => {
       <div className="w-full h-full flex items-center justify-center bg-background p-6">
         <Card className="w-full max-w-2xl backdrop-blur-md bg-black/30 border-gray-800 shadow-lg">
           <CardContent className="p-6">
-            <p className="text-muted-foreground">{t("poolNotFound")}</p>
+            <p className="text-muted-foreground">
+              Pool não encontrado ou erro ao carregar dados.
+            </p>
             {onBack && (
               <Button className="mt-4" variant="outline" onClick={onBack}>
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                {t("backToPools")}
+                Voltar para Pools
               </Button>
             )}
           </CardContent>
@@ -196,17 +196,15 @@ const PoolDetails = ({ poolId = "1", onBack }: PoolDetailsProps) => {
                   <Check className="h-10 w-10 text-green-500" />
                 </motion.div>
                 <h2 className="text-2xl font-bold text-white mb-2">
-                  {t("betPlacedSuccess")}
+                  Aposta Realizada com Sucesso!
                 </h2>
                 <p className="text-gray-300 text-center mb-4">
-                  {t("betPlacedMessage", {
-                    amount: betAmount,
-                    team: pool.teams?.find((t) => t.id === selectedOption)
-                      ?.name,
-                  })}
+                  Sua aposta de R${betAmount} em{" "}
+                  {pool.teams?.find((t) => t.id === selectedOption)?.name} foi
+                  realizada.
                 </p>
                 <p className="text-green-400 font-semibold text-lg">
-                  {t("potentialWinnings", { amount: potentialWinnings })}
+                  Ganhos Potenciais: R${potentialWinnings}
                 </p>
               </CardContent>
             </Card>
@@ -228,7 +226,7 @@ const PoolDetails = ({ poolId = "1", onBack }: PoolDetailsProps) => {
               className="border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              {t("backToPools")}
+              Voltar para Pools
             </Button>
           </motion.div>
         )}
@@ -257,7 +255,7 @@ const PoolDetails = ({ poolId = "1", onBack }: PoolDetailsProps) => {
                 <div className="flex items-center">
                   <Users className="h-5 w-5 mr-3 text-blue-400" />
                   <div>
-                    <p className="text-sm text-gray-400">{t("participants")}</p>
+                    <p className="text-sm text-gray-400">Participantes</p>
                     <p className="text-lg font-semibold text-white">
                       {pool.participants.toLocaleString()}
                     </p>
@@ -266,16 +264,16 @@ const PoolDetails = ({ poolId = "1", onBack }: PoolDetailsProps) => {
                 <div className="flex items-center">
                   <Trophy className="h-5 w-5 mr-3 text-amber-400" />
                   <div>
-                    <p className="text-sm text-gray-400">{t("prizePool")}</p>
+                    <p className="text-sm text-gray-400">Prêmio Total</p>
                     <p className="text-lg font-semibold text-white">
-                      ${pool.prize.toLocaleString()}
+                      R${pool.prize.toLocaleString()}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center">
                   <Calendar className="h-5 w-5 mr-3 text-purple-400" />
                   <div>
-                    <p className="text-sm text-gray-400">{t("endDate")}</p>
+                    <p className="text-sm text-gray-400">Data Final</p>
                     <p className="text-lg font-semibold text-white">
                       {new Date(pool.endDate).toLocaleDateString()}
                     </p>
@@ -299,7 +297,7 @@ const PoolDetails = ({ poolId = "1", onBack }: PoolDetailsProps) => {
             <Card className="backdrop-blur-md bg-black/30 border-gray-800 shadow-lg h-full">
               <CardHeader>
                 <CardTitle className="text-xl text-white">
-                  {t("placeBet")}
+                  Faça Sua Aposta
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -357,12 +355,12 @@ const PoolDetails = ({ poolId = "1", onBack }: PoolDetailsProps) => {
             <Card className="backdrop-blur-md bg-black/30 border-gray-800 shadow-lg h-full">
               <CardHeader>
                 <CardTitle className="text-xl text-white">
-                  {t("betSummary")}
+                  Resumo da Aposta
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
-                  <p className="text-sm text-gray-400 mb-2">{t("betAmount")}</p>
+                  <p className="text-sm text-gray-400 mb-2">Valor da Aposta</p>
                   <div className="flex items-center mb-2">
                     <DollarSign className="h-5 w-5 text-green-400 mr-1" />
                     <span className="text-2xl font-bold text-white">
@@ -378,8 +376,8 @@ const PoolDetails = ({ poolId = "1", onBack }: PoolDetailsProps) => {
                     className="my-4"
                   />
                   <div className="flex justify-between text-xs text-gray-500">
-                    <span>$5</span>
-                    <span>$100</span>
+                    <span>R$5</span>
+                    <span>R$100</span>
                   </div>
                 </div>
 
@@ -390,22 +388,22 @@ const PoolDetails = ({ poolId = "1", onBack }: PoolDetailsProps) => {
                     className="p-4 rounded-lg bg-green-500/10 border border-green-500/30"
                   >
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-gray-300">{t("selection")}</span>
+                      <span className="text-gray-300">Seleção:</span>
                       <span className="font-medium text-white">
                         {pool.teams?.find((t) => t.id === selectedOption)?.name}
                       </span>
                     </div>
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-gray-300">{t("odds")}</span>
+                      <span className="text-gray-300">Odds:</span>
                       <span className="font-medium text-amber-400">
                         {pool.teams?.find((t) => t.id === selectedOption)?.odds}
                         x
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-300">{t("potentialWin")}</span>
+                      <span className="text-gray-300">Ganho Potencial:</span>
                       <span className="font-bold text-green-400">
-                        ${potentialWinnings}
+                        R${potentialWinnings}
                       </span>
                     </div>
                   </motion.div>
@@ -431,14 +429,14 @@ const PoolDetails = ({ poolId = "1", onBack }: PoolDetailsProps) => {
                         <TrendingUp className="h-4 w-4" />
                       </motion.div>
                     ) : null}
-                    {placingBet ? t("processing") : t("finalizeButton")}
+                    {placingBet ? "Processando..." : "Finalizar Aposta"}
                   </Button>
                 </div>
 
                 {!selectedOption && (
                   <div className="flex items-center justify-center text-sm text-gray-400 mt-2">
                     <Info className="h-4 w-4 mr-1" />
-                    <span>{t("selectOption")}</span>
+                    <span>Selecione uma opção para apostar</span>
                   </div>
                 )}
               </CardContent>

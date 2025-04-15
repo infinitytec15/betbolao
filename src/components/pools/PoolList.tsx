@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trophy, Users, Calendar, TrendingUp, Filter } from "lucide-react";
-import { useTranslations } from "next-intl";
 
 interface Pool {
   id: string;
@@ -25,14 +24,13 @@ interface PoolListProps {
 const PoolList = ({ onPoolSelect }: PoolListProps = {}) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const t = useTranslations("poolList");
 
   // Mock data for pools
   const pools: Pool[] = [
     {
       id: "1",
       title: "Premier League Championship",
-      sport: "Soccer",
+      sport: "Futebol",
       event: "Manchester City vs. Liverpool",
       participants: 1245,
       prize: 25000,
@@ -43,7 +41,7 @@ const PoolList = ({ onPoolSelect }: PoolListProps = {}) => {
     {
       id: "2",
       title: "NBA Finals",
-      sport: "Basketball",
+      sport: "Basquete",
       event: "Boston Celtics vs. Golden State Warriors",
       participants: 2389,
       prize: 35000,
@@ -65,8 +63,8 @@ const PoolList = ({ onPoolSelect }: PoolListProps = {}) => {
     {
       id: "4",
       title: "Wimbledon",
-      sport: "Tennis",
-      event: "Men's Singles Final",
+      sport: "Tênis",
+      event: "Final de Simples Masculino",
       participants: 1567,
       prize: 20000,
       endDate: "2023-07-16",
@@ -76,11 +74,11 @@ const PoolList = ({ onPoolSelect }: PoolListProps = {}) => {
   ];
 
   const categories = [
-    { id: "all", name: t("allSports") },
-    { id: "soccer", name: t("soccer") },
-    { id: "basketball", name: t("basketball") },
-    { id: "mma", name: t("mma") },
-    { id: "tennis", name: t("tennis") },
+    { id: "all", name: "Todos os Esportes" },
+    { id: "futebol", name: "Futebol" },
+    { id: "basquete", name: "Basquete" },
+    { id: "mma", name: "MMA" },
+    { id: "tênis", name: "Tênis" },
   ];
 
   const filteredPools =
@@ -104,11 +102,11 @@ const PoolList = ({ onPoolSelect }: PoolListProps = {}) => {
   };
 
   return (
-    <div className="w-full bg-background">
+    <div className="w-full bg-transparent">
       {/* Filter section */}
-      <div className="mb-6 flex flex-wrap items-center gap-3 backdrop-blur-md bg-black/30 border border-gray-800 rounded-xl p-4 shadow-lg">
+      <div className="mb-6 flex flex-wrap items-center gap-3 backdrop-blur-md bg-black/20 border border-gray-800 rounded-xl p-4 shadow-md">
         <Filter className="h-5 w-5 text-green-400 mr-2" />
-        <span className="text-white font-medium mr-4">{t("filterBy")}</span>
+        <span className="text-white font-medium mr-4">Filtrar por:</span>
         {categories.map((category) => (
           <Button
             key={category.id}
@@ -135,7 +133,7 @@ const PoolList = ({ onPoolSelect }: PoolListProps = {}) => {
             transition={{ duration: 0.3, delay: index * 0.1 }}
             whileHover={{ y: -5, transition: { duration: 0.2 } }}
           >
-            <Card className="h-full overflow-hidden backdrop-blur-md bg-black/30 border-gray-800 shadow-lg hover:shadow-green-500/20 transition-all duration-300">
+            <Card className="h-full overflow-hidden backdrop-blur-md bg-black/20 border-gray-800 shadow-md hover:shadow-green-500/10 transition-all duration-300">
               <div className="relative h-48 overflow-hidden">
                 <img
                   src={pool.image}
@@ -156,13 +154,13 @@ const PoolList = ({ onPoolSelect }: PoolListProps = {}) => {
                     <div className="flex items-center">
                       <Users className="h-4 w-4 mr-2 text-blue-400" />
                       <span className="text-sm text-gray-300">
-                        {pool.participants.toLocaleString()} {t("players")}
+                        {pool.participants.toLocaleString()} jogadores
                       </span>
                     </div>
                     <div className="flex items-center">
                       <Trophy className="h-4 w-4 mr-2 text-amber-400" />
                       <span className="text-sm text-gray-300">
-                        ${pool.prize.toLocaleString()}
+                        R${pool.prize.toLocaleString()}
                       </span>
                     </div>
                   </div>
@@ -170,7 +168,7 @@ const PoolList = ({ onPoolSelect }: PoolListProps = {}) => {
                   <div className="flex items-center">
                     <Calendar className="h-4 w-4 mr-2 text-purple-400" />
                     <span className="text-sm text-gray-300">
-                      {t("ends")} {new Date(pool.endDate).toLocaleDateString()}
+                      Termina em: {new Date(pool.endDate).toLocaleDateString()}
                     </span>
                   </div>
 
@@ -192,7 +190,7 @@ const PoolList = ({ onPoolSelect }: PoolListProps = {}) => {
                         <TrendingUp className="h-4 w-4" />
                       </motion.div>
                     ) : null}
-                    {t("participate")}
+                    Participar
                   </Button>
                 </div>
               </CardContent>
