@@ -13,7 +13,15 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AtSign, Key, User, ArrowRight, Mail, Shield } from "lucide-react";
+import {
+  AtSign,
+  Key,
+  User,
+  ArrowRight,
+  Mail,
+  Shield,
+  Trophy,
+} from "lucide-react";
 import Link from "next/link";
 
 type AuthFormType = "login" | "register" | "forgot-password";
@@ -65,6 +73,16 @@ export const AuthForms = () => {
       >
         <Card className="backdrop-blur-md bg-black/30 border-gray-800 shadow-xl shadow-green-900/20">
           <CardHeader className="space-y-1 text-center">
+            <div className="flex justify-center mb-2">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center"
+              >
+                <Trophy className="h-8 w-8 text-green-500" />
+              </motion.div>
+            </div>
             <CardTitle className="text-2xl font-bold text-white">
               {formType === "login"
                 ? "Entrar na sua conta"
@@ -74,7 +92,7 @@ export const AuthForms = () => {
             </CardTitle>
             <CardDescription className="text-gray-400">
               {formType === "login"
-                ? "Entre com seu e-mail e senha"
+                ? "Entre com seu e-mail e senha para acessar"
                 : formType === "register"
                   ? "Preencha seus dados para se cadastrar"
                   : "Enviaremos um link para seu e-mail"}

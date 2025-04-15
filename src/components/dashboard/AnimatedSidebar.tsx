@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
   Tooltip,
@@ -19,7 +19,13 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  Users,
+  LogOut,
+  Bell,
 } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ThemeSwitcher } from "@/components/theme-switcher";
+import Link from "next/link";
 
 interface SidebarItemProps {
   icon: React.ReactNode;
@@ -105,17 +111,18 @@ const AnimatedSidebar = ({
 
   const sidebarItems = [
     { id: "home", label: "Início", icon: <Home size={22} /> },
-    { id: "bets", label: "Minhas Apostas", icon: <TicketCheck size={22} /> },
+    { id: "bets", label: "Meus Bolões", icon: <TicketCheck size={22} /> },
     { id: "wallet", label: "Carteira", icon: <Wallet size={22} /> },
+    { id: "affiliates", label: "Afiliados", icon: <Users size={22} /> },
+    {
+      id: "history",
+      label: "Histórico",
+      icon: <History size={22} />,
+    },
     {
       id: "gamification",
       label: "Gamificação",
       icon: <Trophy size={22} />,
-    },
-    {
-      id: "history",
-      label: "Histórico de Transações",
-      icon: <History size={22} />,
     },
     { id: "support", label: "Suporte", icon: <HelpCircle size={22} /> },
     { id: "settings", label: "Configurações", icon: <Settings size={22} /> },
@@ -162,6 +169,24 @@ const AnimatedSidebar = ({
           </motion.button>
         </div>
 
+        {!isCollapsed && (
+          <div className="p-4 border-b border-gray-800">
+            <div className="flex items-center space-x-3">
+              <Avatar className="h-10 w-10 border-2 border-green-500/50">
+                <AvatarImage
+                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=gambler"
+                  alt="Avatar"
+                />
+                <AvatarFallback>PG</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-sm font-medium text-white">Pedro Gamer</p>
+                <p className="text-xs text-green-400">Nível 12</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-col gap-2 p-3 mt-4">
           {sidebarItems.map((item) => (
             <SidebarItem
@@ -180,22 +205,112 @@ const AnimatedSidebar = ({
       </div>
 
       <div className="p-4 border-t border-gray-800 mt-auto">
-        <div className="flex items-center justify-between mb-3">
-          {!isCollapsed && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-xs text-gray-400"
-            >
+        {!isCollapsed ? (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <ThemeSwitcher />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <motion.button
+                      className="p-2 rounded-full hover:bg-gray-800/50 text-gray-400 hover:text-white relative"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Bell size={20} />
+                      <span className="absolute top-0 right-0 w-2 h-2 bg-green-500 rounded-full"></span>
+                    </motion.button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Notificações</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+
+            <Link href="/login">
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-gray-400 hover:text-white hover:bg-gray-800/50"
+                onClick={() => {}}
+              >
+                <LogOut size={20} className="mr-2" />
+                Sair
+              </Button>
+            </Link>
+
+            <div className="text-xs text-gray-500 pt-2 border-t border-gray-800">
               <p>© 2023 BetXP</p>
               <p className="mt-1">Todos os direitos reservados</p>
-            </motion.div>
-          )}
-        </div>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center space-y-4">
+            <ThemeSwitcher />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <motion.button
+                    className="p-2 rounded-full hover:bg-gray-800/50 text-gray-400 hover:text-white relative"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <Bell size={20} />
+                    <span className="absolute top-0 right-0 w-2 h-2 bg-green-500 rounded-full"></span>
+                  </motion.button>
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  <p>Notificações</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link href="/login">
+                    <motion.button
+                      className="p-2 rounded-full hover:bg-gray-800/50 text-gray-400 hover:text-white"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <LogOut size={20} />
+                    </motion.button>
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  <p>Sair</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        )}
       </div>
     </motion.div>
   );
 };
 
 export default AnimatedSidebar;
+
+const Button = ({
+  children,
+  className,
+  variant = "default",
+  ...props
+}: any) => {
+  return (
+    <button
+      className={cn(
+        "flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors",
+        variant === "default"
+          ? "bg-green-500 text-white hover:bg-green-600"
+          : "",
+        variant === "ghost" ? "hover:bg-gray-800/50" : "",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
