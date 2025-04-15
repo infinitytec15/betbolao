@@ -19,7 +19,10 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  Globe,
 } from "lucide-react";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useTranslations } from "next-intl";
 
 interface SidebarItemProps {
   icon: React.ReactNode;
@@ -93,24 +96,33 @@ const SidebarItem = ({
 
 interface AnimatedSidebarProps {
   className?: string;
+  onNavigate?: (section: string) => void;
 }
 
-const AnimatedSidebar = ({ className = "" }: AnimatedSidebarProps) => {
+const AnimatedSidebar = ({
+  className = "",
+  onNavigate,
+}: AnimatedSidebarProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [activeItem, setActiveItem] = useState("home");
+  const t = useTranslations("sidebar");
 
   const sidebarItems = [
-    { id: "home", label: "Home", icon: <Home size={22} /> },
-    { id: "bets", label: "My Bets", icon: <TicketCheck size={22} /> },
-    { id: "wallet", label: "Wallet", icon: <Wallet size={22} /> },
-    { id: "gamification", label: "Gamification", icon: <Trophy size={22} /> },
+    { id: "home", label: t("home"), icon: <Home size={22} /> },
+    { id: "bets", label: t("myBets"), icon: <TicketCheck size={22} /> },
+    { id: "wallet", label: t("wallet"), icon: <Wallet size={22} /> },
+    {
+      id: "gamification",
+      label: t("gamification"),
+      icon: <Trophy size={22} />,
+    },
     {
       id: "history",
-      label: "Transaction History",
+      label: t("history"),
       icon: <History size={22} />,
     },
-    { id: "support", label: "Support", icon: <HelpCircle size={22} /> },
-    { id: "settings", label: "Settings", icon: <Settings size={22} /> },
+    { id: "support", label: t("support"), icon: <HelpCircle size={22} /> },
+    { id: "settings", label: t("settings"), icon: <Settings size={22} /> },
   ];
 
   const toggleSidebar = () => {
@@ -161,7 +173,10 @@ const AnimatedSidebar = ({ className = "" }: AnimatedSidebarProps) => {
               icon={item.icon}
               label={item.label}
               isActive={activeItem === item.id}
-              onClick={() => setActiveItem(item.id)}
+              onClick={() => {
+                setActiveItem(item.id);
+                if (onNavigate) onNavigate(item.id);
+              }}
               isCollapsed={isCollapsed}
             />
           ))}
@@ -169,17 +184,20 @@ const AnimatedSidebar = ({ className = "" }: AnimatedSidebarProps) => {
       </div>
 
       <div className="p-4 border-t border-border mt-auto">
-        {!isCollapsed && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="text-xs text-muted-foreground"
-          >
-            <p>© 2023 BetXP</p>
-            <p className="mt-1">All rights reserved</p>
-          </motion.div>
-        )}
+        <div className="flex items-center justify-between mb-3">
+          {!isCollapsed && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-xs text-muted-foreground"
+            >
+              <p>{t("copyright")}</p>
+              <p className="mt-1">{t("allRightsReserved")}</p>
+            </motion.div>
+          )}
+          <LanguageSwitcher />
+        </div>
       </div>
     </motion.div>
   );
