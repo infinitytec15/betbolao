@@ -6,13 +6,14 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import {
-  Football,
-  Basketball,
-  TennisBall,
-  Flag,
-  Volleyball,
   Menu,
   X,
+  Flag,
+  CircleDot,
+  Dumbbell,
+  Trophy,
+  Gamepad2,
+  Shirt,
 } from "lucide-react";
 
 const Header = () => {
@@ -23,11 +24,14 @@ const Header = () => {
   };
 
   const sports = [
-    { name: "Futebol", icon: <Football className="mr-2" size={18} /> },
-    { name: "Basquete", icon: <Basketball className="mr-2" size={18} /> },
-    { name: "Tênis", icon: <TennisBall className="mr-2" size={18} /> },
-    { name: "Futebol Americano", icon: <Flag className="mr-2" size={18} /> },
-    { name: "Vôlei", icon: <Volleyball className="mr-2" size={18} /> },
+    { name: "Futebol", icon: <Shirt className="mr-2" size={18} /> },
+    { name: "Basquete", icon: <Trophy className="mr-2" size={18} /> },
+    { name: "Tênis", icon: <Dumbbell className="mr-2" size={18} /> },
+    {
+      name: "Futebol Americano",
+      icon: <Gamepad2 className="mr-2" size={18} />,
+    },
+    { name: "Vôlei", icon: <CircleDot className="mr-2" size={18} /> },
   ];
 
   return (
