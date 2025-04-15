@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
@@ -26,6 +26,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 
 interface SidebarItemProps {
   icon: React.ReactNode;
@@ -33,6 +34,7 @@ interface SidebarItemProps {
   isActive?: boolean;
   onClick: () => void;
   isCollapsed: boolean;
+  href: string;
 }
 
 const SidebarItem = ({
@@ -41,51 +43,54 @@ const SidebarItem = ({
   isActive = false,
   onClick,
   isCollapsed,
+  href,
 }: SidebarItemProps) => {
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <motion.div
-            className={cn(
-              "flex items-center gap-3 px-4 py-3 cursor-pointer rounded-lg transition-all",
-              isActive
-                ? "bg-green-500/10 text-green-400 border-l-4 border-green-500"
-                : "hover:bg-gray-800/50 text-gray-400 hover:text-white",
-            )}
-            onClick={onClick}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
+          <Link href={href} className="block">
             <motion.div
               className={cn(
-                "flex items-center justify-center",
-                isActive && "text-green-400",
+                "flex items-center gap-3 px-4 py-3 cursor-pointer rounded-lg transition-all",
+                isActive
+                  ? "bg-green-500/10 text-green-400 border-l-4 border-green-500"
+                  : "hover:bg-gray-800/50 text-gray-400 hover:text-white",
               )}
-              initial={{ scale: 1 }}
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{
-                duration: 0.5,
-                repeat: isActive ? Infinity : 0,
-                repeatDelay: 5,
-              }}
+              onClick={onClick}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
-              {icon}
-            </motion.div>
-            {!isCollapsed && (
-              <motion.span
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
+              <motion.div
                 className={cn(
-                  "font-medium",
-                  isActive ? "text-green-400" : "text-white",
+                  "flex items-center justify-center",
+                  isActive && "text-green-400",
                 )}
+                initial={{ scale: 1 }}
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{
+                  duration: 0.5,
+                  repeat: isActive ? Infinity : 0,
+                  repeatDelay: 5,
+                }}
               >
-                {label}
-              </motion.span>
-            )}
-          </motion.div>
+                {icon}
+              </motion.div>
+              {!isCollapsed && (
+                <motion.span
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  className={cn(
+                    "font-medium",
+                    isActive ? "text-green-400" : "text-white",
+                  )}
+                >
+                  {label}
+                </motion.span>
+              )}
+            </motion.div>
+          </Link>
         </TooltipTrigger>
         {isCollapsed && (
           <TooltipContent side="right">
@@ -107,25 +112,74 @@ const AnimatedSidebar = ({
   onNavigate,
 }: AnimatedSidebarProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [activeItem, setActiveItem] = useState("home");
+  const pathname = usePathname();
+
+  // Function to determine the active item based on the current path
+  const getActiveItemFromPath = (path: string) => {
+    if (path.includes("/dashboard")) return "home";
+    if (path.includes("/carteira")) return "wallet";
+    if (path.includes("/afiliados")) return "affiliates";
+    if (path.includes("/historico")) return "history";
+    if (path.includes("/gamification")) return "gamification";
+    return "home";
+  };
+
+  const [activeItem, setActiveItem] = useState(getActiveItemFromPath(pathname));
+
+  // Update active item when pathname changes
+  useEffect(() => {
+    setActiveItem(getActiveItemFromPath(pathname));
+  }, [pathname]);
 
   const sidebarItems = [
-    { id: "home", label: "Início", icon: <Home size={22} /> },
-    { id: "bets", label: "Meus Bolões", icon: <TicketCheck size={22} /> },
-    { id: "wallet", label: "Carteira", icon: <Wallet size={22} /> },
-    { id: "affiliates", label: "Afiliados", icon: <Users size={22} /> },
+    {
+      id: "home",
+      label: "Início",
+      icon: <Home size={22} />,
+      href: "/dashboard",
+    },
+    {
+      id: "bets",
+      label: "Meus Bolões",
+      icon: <TicketCheck size={22} />,
+      href: "/dashboard",
+    },
+    {
+      id: "wallet",
+      label: "Carteira",
+      icon: <Wallet size={22} />,
+      href: "/carteira",
+    },
+    {
+      id: "affiliates",
+      label: "Afiliados",
+      icon: <Users size={22} />,
+      href: "/afiliados",
+    },
     {
       id: "history",
       label: "Histórico",
       icon: <History size={22} />,
+      href: "/historico",
     },
     {
       id: "gamification",
       label: "Gamificação",
       icon: <Trophy size={22} />,
+      href: "/gamification",
     },
-    { id: "support", label: "Suporte", icon: <HelpCircle size={22} /> },
-    { id: "settings", label: "Configurações", icon: <Settings size={22} /> },
+    {
+      id: "support",
+      label: "Suporte",
+      icon: <HelpCircle size={22} />,
+      href: "/dashboard",
+    },
+    {
+      id: "settings",
+      label: "Configurações",
+      icon: <Settings size={22} />,
+      href: "/dashboard",
+    },
   ];
 
   const toggleSidebar = () => {
@@ -199,6 +253,7 @@ const AnimatedSidebar = ({
                 if (onNavigate) onNavigate(item.id);
               }}
               isCollapsed={isCollapsed}
+              href={item.href}
             />
           ))}
         </div>
